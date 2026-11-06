@@ -309,11 +309,14 @@ const dashChargeStep=lv=>lv<=5?15:10;
 const SKINS=[
   {id:'default',  name:'ЗОЛОТОЙ',    fill:'#ffd23f', stroke:'#7a5800', inner:'rgba(255,255,255,.25)', glow:'rgba(255,210,63,.35)',  reqJ:0,    reqP:0},
   {id:'emerald',  name:'ИЗУМРУД',    fill:'#5fd39a', stroke:'#1d6a42', inner:'rgba(255,255,255,.28)', glow:'rgba(95,211,154,.35)',  reqJ:50,   reqP:25},
+  {id:'ice',      name:'ЛЕД',        fill:'#bfeaff', stroke:'#2b6f8a', inner:'rgba(255,255,255,.40)', glow:'rgba(191,234,255,.45)', reqJ:60,   reqP:30},
   {id:'sapphire', name:'САПФИР',     fill:'#5fa8ff', stroke:'#1e4d8a', inner:'rgba(255,255,255,.30)', glow:'rgba(95,168,255,.35)',  reqJ:150,  reqP:80},
   {id:'ruby',     name:'РУБИН',      fill:'#ff6b6b', stroke:'#8a1e1e', inner:'rgba(255,255,255,.30)', glow:'rgba(255,107,107,.35)', reqJ:300,  reqP:160},
+  {id:'plasma',   name:'ПЛАЗМА',     fill:'#ff4fd8', stroke:'#6a0a5e', inner:'rgba(255,255,255,.35)', glow:'rgba(255,79,216,.45)',  reqJ:350,  reqP:200},
   {id:'amethyst', name:'АМЕТИСТ',    fill:'#c084fc', stroke:'#5b2a8a', inner:'rgba(255,255,255,.30)', glow:'rgba(192,132,252,.35)', reqJ:500,  reqP:280},
   {id:'obsidian', name:'ОБСИДИАН',   fill:'#3a3f4a', stroke:'#0d0f13', inner:'rgba(255,210,63,.35)',  glow:'rgba(255,210,63,.25)',  reqJ:800,  reqP:450},
   {id:'coral',    name:'КОРАЛЛ',     fill:'#ff9a76', stroke:'#8a3d22', inner:'rgba(255,255,255,.30)', glow:'rgba(255,154,118,.35)', reqJ:1200, reqP:650},
+  {id:'lava',     name:'ЛАВА',       fill:'#ff7a2a', stroke:'#5e1600', inner:'rgba(255,240,150,.5)', glow:'rgba(255,122,42,.5)',   reqJ:1400, reqP:750},
   {id:'cyber',    name:'КИБЕР',      fill:'#3ef2e0', stroke:'#0a6a62', inner:'rgba(255,255,255,.35)', glow:'rgba(62,242,224,.40)',  reqJ:1700, reqP:900},
 ];
 const SKIN_MAP={};SKINS.forEach(s=>SKIN_MAP[s.id]=s);
@@ -375,7 +378,6 @@ const S={
   jump(){tone(300,570,.14,'square',.05);tone(600,900,.1,'sine',.03,.02)},
   dash(){tone(180,720,.18,'sawtooth',.06);tone(900,300,.12,'square',.035,.04)},
   dashEmpty(){tone(220,120,.1,'square',.04)},
-  land(){tone(150,68,.12,'triangle',.08)},
   mat(){tone(640,980,.16,'sine',.05);tone(880,1320,.2,'sine',.035,.07)},
   out(){tone(320,110,.22,'sine',.03)},
   die(){tone(420,55,.42,'sawtooth',.07)},
@@ -942,7 +944,6 @@ function update(dt){
   }
   if(best){
     player.y=best.y-FOOT;player.vy=0;player.grounded=true;player.coyote=COYOTE;
-    // Анимация приземления убрана: нет пыли, звука, тряски и сплющивания.
     if(best.i>currentIdx){
       currentIdx=best.i;ensureGenerated(currentIdx+2);updateWindow();updHUD();
       addPlatCounter();
@@ -1075,7 +1076,7 @@ function drawEffects(){
   ctx.restore();
 }
 
-/* ---------- X MARK: 9 ANIMATIONS, color from skin ---------- */
+/* ---------- X MARK ---------- */
 function drawXMark(px,py,t){
   const sk=activeSkin();
   const colRgb=hexToRgbStr(sk.fill);
